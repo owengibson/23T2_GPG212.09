@@ -9,7 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5058912888395583303}
-  - component: {fileID: 967299454180559990}
+  - component: {fileID: 2041700699953380654}
+  - component: {fileID: 5909909501863025663}
   m_Layer: 0
   m_Name: CandyCane
   m_TagString: Untagged
@@ -33,7 +34,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!205 &967299454180559990
+--- !u!136 &2041700699953380654
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7360125277175128872}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 1.1809717
+  m_Height: 22.450008
+  m_Direction: 1
+  m_Center: {x: 1.0381451, y: 5.552334, z: 0.4058007}
+--- !u!205 &5909909501863025663
 LODGroup:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,20 +57,20 @@ LODGroup:
   m_GameObject: {fileID: 7360125277175128872}
   serializedVersion: 2
   m_LocalReferencePoint: {x: 0, y: 0, z: 0}
-  m_Size: 1
+  m_Size: 100
   m_FadeMode: 0
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.6539315
+  - screenRelativeHeight: 0.9381009
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 7212411423844586190}
-  - screenRelativeHeight: 0.09465309
+  - screenRelativeHeight: 0.76387346
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 7212411423844586190}
-  - screenRelativeHeight: 0.005521534
+  - screenRelativeHeight: 0.18351601
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 7212411423844586190}
