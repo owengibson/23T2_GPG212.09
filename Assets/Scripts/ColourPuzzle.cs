@@ -23,6 +23,7 @@ namespace GPG212_09
         [Header("Other References")]
         [SerializeField] private GameObject canvas;
         [SerializeField] private GameObject successText;
+        [SerializeField] private GameObject proximityPopup;
         [Space]
 
         [Header("Parameters")]
@@ -100,6 +101,8 @@ namespace GPG212_09
 
         public void OpenPuzzle()
         {
+            proximityPopup.SetActive(false);
+
             Cursor.visible = true;
             _playerInput.cursorInputForLook = false;
             Cursor.lockState = CursorLockMode.Confined;
@@ -112,6 +115,7 @@ namespace GPG212_09
         {
             if (!other.CompareTag("Player")) return;
 
+            proximityPopup.SetActive(true);
             _isInTriggerArea = true;
             _playerInput = other.GetComponent<StarterAssetsInputs>();
         }
@@ -121,6 +125,7 @@ namespace GPG212_09
             if (!other.CompareTag("Player")) return;
 
             ClosePuzzle();
+            proximityPopup.SetActive(false);
         }
 
         private void Update()
