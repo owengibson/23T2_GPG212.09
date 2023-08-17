@@ -6,12 +6,12 @@ using StarterAssets;
 using UnityEngine.EventSystems;
 using TMPro;
 using System.Collections;
+using UnityEngine.InputSystem;
 
 namespace GPG212_09
 {
-    public class ColourPuzzle : MonoBehaviour
+    public class ColourPuzzle : Puzzle
     {
-        public enum PuzzleState { Closed, InProgress, Completed, OnCooldown }
         [SerializeField] private PuzzleState puzzleState = PuzzleState.Closed;
         [Space]
 
@@ -55,6 +55,8 @@ namespace GPG212_09
         private StarterAssetsInputs _playerInput;
         private FirstPersonController _characterController;
 
+        private PuzzleType _puzzleType = PuzzleType.Colour;
+
         private void Start()
         {
             GenerateColour();
@@ -94,6 +96,7 @@ namespace GPG212_09
                 Debug.Log("Current colour matches target colour");
                 successText.SetActive(true);
                 Invoke("ClosePuzzle", 1f);
+                EventManager.onPuzzleComplete?.Invoke(_puzzleType);
 
             }
             else
@@ -121,7 +124,7 @@ namespace GPG212_09
             rectTransform.localEulerAngles = inactiveCanvasRot;
             rectTransform.localScale = inactiveCanvasScale;
 
-            if (_isInTriggerArea) proximityPopup.SetActive(true);
+            if (_isInTriggerArea && puzzleState != PuzzleState.Completed) proximityPopup.SetActive(true);
         }
 
         public void OpenPuzzle()
