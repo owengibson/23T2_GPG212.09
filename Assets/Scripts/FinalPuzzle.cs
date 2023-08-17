@@ -12,7 +12,7 @@ namespace GPG212_09
 
         private int _finishedPuzzles;
 
-        private void IncrementFinishedPuzzles()
+        private void IncrementFinishedPuzzleTypes()
         {
             _finishedPuzzles++;
             if (_finishedPuzzles == puzzleManagers.Length) DeactivateDoor();
@@ -23,9 +23,13 @@ namespace GPG212_09
             door.SetActive(false);
         }
 
-        private void Update()
+        private void OnEnable()
         {
-            if (Input.GetKeyDown(KeyCode.F12)) DeactivateDoor();
+            EventManager.onPuzzleTypeComplete += IncrementFinishedPuzzleTypes;
+        }
+        private void OnDisable()
+        {
+            EventManager.onPuzzleTypeComplete -= IncrementFinishedPuzzleTypes;
         }
     }
 }

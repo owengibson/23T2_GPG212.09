@@ -14,18 +14,30 @@ namespace GPG212_09
 
         private int _completedPuzzles;
 
-        private void IncrementCompletedPuzzles(PuzzleType puzzleState)
+        private void IncrementCompletedPuzzles(PuzzleType puzzleType)
         {
-            if (puzzleState != puzzleType) return;
+            if (puzzleType != this.puzzleType) return;
 
             _completedPuzzles++;
 
             if (_completedPuzzles == puzzles.Length)
             {
                 // ALL PUZZLES OF THIS TYPE COMPLETED
-                Debug.Log($"All {puzzleType} puzzles done.");
+                Debug.Log($"All {this.puzzleType} puzzles done.");
                 particleSystem.SetActive(true);
+                EventManager.onPuzzleTypeComplete?.Invoke();
             }
+        }
+
+        private void CompleteAllPuzzles()
+        {
+            _completedPuzzles = puzzles.Length - 1;
+            IncrementCompletedPuzzles(puzzleType);
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.F12)) CompleteAllPuzzles();
         }
 
         private void OnEnable()

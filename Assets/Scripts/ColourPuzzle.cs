@@ -1,12 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
 using oezyowen;
-using UnityEngine.Rendering;
-using StarterAssets;
 using UnityEngine.EventSystems;
 using TMPro;
 using System.Collections;
-using UnityEngine.InputSystem;
+using StarterAssets;
 
 namespace GPG212_09
 {
@@ -53,7 +51,6 @@ namespace GPG212_09
         private bool _isInTriggerArea = false;
 
         private StarterAssetsInputs _playerInput;
-        private FirstPersonController _characterController;
 
         private PuzzleType _puzzleType = PuzzleType.Colour;
 
@@ -179,7 +176,6 @@ namespace GPG212_09
             proximityPopup.SetActive(true);
             _isInTriggerArea = true;
             _playerInput = other.GetComponent<StarterAssetsInputs>();
-            _characterController = other.GetComponent<FirstPersonController>();
         }
 
         private void OnTriggerExit(Collider other)
