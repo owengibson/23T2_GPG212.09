@@ -11,8 +11,8 @@ namespace GPG212_09
 {
     public class ColourPuzzle : MonoBehaviour
     {
-        public enum PuzzleState { Closed, InProgress, Matched, OnCooldown }
-        public PuzzleState puzzleState = PuzzleState.Closed;
+        public enum PuzzleState { Closed, InProgress, Completed, OnCooldown }
+        [SerializeField] private PuzzleState puzzleState = PuzzleState.Closed;
         [Space]
 
         [Header("Slider References")]
@@ -53,6 +53,7 @@ namespace GPG212_09
         private bool _isInTriggerArea = false;
 
         private StarterAssetsInputs _playerInput;
+        private FirstPersonController _characterController;
 
         private void Start()
         {
@@ -82,14 +83,14 @@ namespace GPG212_09
 
         public void CheckColourMatch()
         {
-            if (puzzleState == PuzzleState.Matched) return;
+            if (puzzleState == PuzzleState.Completed) return;
 
             if((_redLow <= redSlider.value && redSlider.value <= _redHigh) &&
                 (_greenLow <= greenSlider.value && greenSlider.value <= _greenHigh) &&
                 (_blueLow <= blueSlider.value && blueSlider.value <= _blueHigh))
             {
                 // PUZZLE SUCCEEDED
-                puzzleState = PuzzleState.Matched;
+                puzzleState = PuzzleState.Completed;
                 Debug.Log("Current colour matches target colour");
                 successText.SetActive(true);
                 Invoke("ClosePuzzle", 1f);
@@ -98,17 +99,18 @@ namespace GPG212_09
             else
             {
                 // PUZZLE FAILED
-                StartCoroutine(PuzzleCooldown(timeToComplete));
+                StartCoroutine(PuzzleCooldown(attemptCooldown));
             }
         }
 
         public void ClosePuzzle()
         {
-            if (puzzleState != PuzzleState.Matched) puzzleState = PuzzleState.Closed;
+            if (puzzleState != PuzzleState.Completed) puzzleState = PuzzleState.Closed;
 
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
             _playerInput.cursorInputForLook = true;
+            //_characterController.enabled = true;
             EventSystem.current.SetSelectedGameObject(null);
 
             canvas.GetComponent<GraphicRaycaster>().enabled = false;
@@ -118,17 +120,20 @@ namespace GPG212_09
             rectTransform.localPosition = inactiveCanvasPos;
             rectTransform.localEulerAngles = inactiveCanvasRot;
             rectTransform.localScale = inactiveCanvasScale;
+
+            if (_isInTriggerArea) proximityPopup.SetActive(true);
         }
 
         public void OpenPuzzle()
         {
-            if (puzzleState != PuzzleState.Matched) puzzleState = PuzzleState.InProgress;
+            if (puzzleState != PuzzleState.Completed) puzzleState = PuzzleState.InProgress;
 
             proximityPopup.SetActive(false);
 
             Cursor.visible = true;
-            _playerInput.cursorInputForLook = false;
             Cursor.lockState = CursorLockMode.Confined;
+            _playerInput.cursorInputForLook = false;
+            //_characterController.enabled = false;
 
             canvas.GetComponent <GraphicRaycaster>().enabled = true;
             canvas.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
@@ -166,25 +171,28 @@ namespace GPG212_09
         private void OnTriggerEnter(Collider other)
         {
             if (!other.CompareTag("Player")) return;
-            if (puzzleState == PuzzleState.Matched) return;
+            if (puzzleState == PuzzleState.Completed) return;
 
             proximityPopup.SetActive(true);
             _isInTriggerArea = true;
             _playerInput = other.GetComponent<StarterAssetsInputs>();
+            _characterController = other.GetComponent<FirstPersonController>();
         }
 
         private void OnTriggerExit(Collider other)
         {
             if (!other.CompareTag("Player")) return;
-            if (puzzleState == PuzzleState.Matched) return;
+            if (puzzleState == PuzzleState.Completed) return;
 
-            ClosePuzzle();
+            if (puzzleState == PuzzleState.InProgress) ClosePuzzle();
+
             proximityPopup.SetActive(false);
+            _isInTriggerArea = false;
         }
 
         private void Update()
         {
-            if (puzzleState != PuzzleState.Matched)
+            if (puzzleState != PuzzleState.Completed)
             {
                 if (_isInTriggerArea && puzzleState == PuzzleState.Closed)
                 {
@@ -193,6 +201,8 @@ namespace GPG212_09
 
                 if (puzzleState == PuzzleState.InProgress)
                 {
+                    if (Input.GetKeyDown(KeyCode.Escape)) ClosePuzzle();
+
                     _currentTime += Time.deltaTime;
                     timerSlider.value = 1 - _currentTime / timeToComplete;
                     if (_currentTime >= timeToComplete)
