@@ -4,5 +4,5 @@ using UnityEngine;
 
 namespace GPG212_09
 {
-    public enum PuzzleState { Closed, InProgress, Completed, OnCooldown }
+    public enum PuzzleState { Closed, InProgress, Completed, OnCooldown, Open }
 }
