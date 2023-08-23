@@ -20,8 +20,8 @@ namespace GPG212_09
         [Space]
 
         [SerializeField] private GameObject canvas;
-        [SerializeField] private GameObject tutorialPanel;
-        [SerializeField] private GameObject puzzlePanel;
+        //[SerializeField] private GameObject tutorialPanel;
+        //[SerializeField] private GameObject puzzlePanel;
         [SerializeField] private GameObject successPanel;
         [SerializeField] private GameObject failPanel;
         [Space]
@@ -47,7 +47,7 @@ namespace GPG212_09
 
         private void Awake()
         {
-            
+            StartPuzzleRound();
         }
 
         private void Update()
@@ -57,10 +57,10 @@ namespace GPG212_09
                 if (Input.GetKeyDown(KeyCode.E)) OpenPuzzle();
             }
 
-            if (puzzleState == PuzzleState.Open)
+            /*if (puzzleState == PuzzleState.Open)
             {
                 if (Input.GetKeyDown(KeyCode.Return)) StartPuzzle();
-            }
+            }*/
 
             if (puzzleState == PuzzleState.InProgress)
             {
@@ -73,6 +73,7 @@ namespace GPG212_09
                     answerInputField.DeactivateInputField();
                     Invoke("ClosePuzzle", 1f);
                     Invoke("ResetPuzzle", 1f);
+                    puzzleState = PuzzleState.Closed;
                 }
             }
         }
@@ -80,7 +81,7 @@ namespace GPG212_09
         private void OpenPuzzle()
         {
             if (puzzleState != PuzzleState.Closed) return;
-            puzzleState = PuzzleState.Open;
+            puzzleState = PuzzleState.InProgress;
 
             proximityPopup.SetActive(false);
 
@@ -90,6 +91,9 @@ namespace GPG212_09
 
             canvas.GetComponent<GraphicRaycaster>().enabled = true;
             canvas.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+
+            if (_currentRound == 1) answerInputField.ActivateInputField();
+            else StartPuzzleRound();
         }
 
         private void ClosePuzzle()
@@ -114,16 +118,16 @@ namespace GPG212_09
             if (_isInTriggerArea && puzzleState != PuzzleState.Completed) proximityPopup.SetActive(true);
         }
 
-        private void StartPuzzle()
+        /*private void StartPuzzle()
         {
             tutorialPanel.SetActive(false);
             puzzlePanel.SetActive(true);
 
             if (puzzleState == PuzzleState.Open) puzzleState = PuzzleState.InProgress;
             StartPuzzleRound();
-        }
+        }*/
 
-        private void StartPuzzleRound()
+        private void GeneratePuzzle()
         {
             int a = Random.Range(1, 10);
             int b = Random.Range(1, 10);
@@ -131,6 +135,11 @@ namespace GPG212_09
 
             questionText.text = $"{a} + {b} = ";
             answerInputField.text = "";
+        }
+
+        private void StartPuzzleRound()
+        {
+            GeneratePuzzle();
             answerInputField.ActivateInputField();
         }
 
@@ -161,10 +170,12 @@ namespace GPG212_09
         }
         private void ResetPuzzle()
         {
-            tutorialPanel.SetActive(true);
-            puzzlePanel.SetActive(false);
+            /*tutorialPanel.SetActive(true);
+            puzzlePanel.SetActive(false);*/
             _currentRound = 1;
             _currentTime = 0;
+            timerSlider.value = 1;
+            GeneratePuzzle();
         }
 
         private void OnTriggerEnter(Collider other)
@@ -183,7 +194,11 @@ namespace GPG212_09
             if (!other.CompareTag("Player")) return;
             if (puzzleState == PuzzleState.Completed) return;
 
-            if (puzzleState == PuzzleState.InProgress) ClosePuzzle();
+            if (puzzleState == PuzzleState.InProgress)
+            {
+                ClosePuzzle();
+                ResetPuzzle();
+            }
 
             proximityPopup.SetActive(false);
             _isInTriggerArea = false;

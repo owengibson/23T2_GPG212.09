@@ -78,11 +78,13 @@ namespace GPG212_09
         {
             _currentColour = new Color(redSlider.value, greenSlider.value, blueSlider.value);
             currentColourPreview.color = _currentColour;
+
+            CheckColourMatch();
         }
 
         public void CheckColourMatch()
         {
-            if (puzzleState == PuzzleState.Completed) return;
+            if (puzzleState != PuzzleState.InProgress) return;
 
             if((_redLow <= redSlider.value && redSlider.value <= _redHigh) &&
                 (_greenLow <= greenSlider.value && greenSlider.value <= _greenHigh) &&
@@ -96,11 +98,11 @@ namespace GPG212_09
                 EventManager.onPuzzleComplete?.Invoke(_puzzleType);
 
             }
-            else
+            /*else
             {
                 // PUZZLE FAILED
                 StartCoroutine(PuzzleCooldown(attemptCooldown));
-            }
+            }*/
         }
 
         public void ClosePuzzle()
@@ -202,12 +204,12 @@ namespace GPG212_09
                 {
                     if (Input.GetKeyDown(KeyCode.Escape)) ClosePuzzle();
 
-                    _currentTime += Time.deltaTime;
+                    /*_currentTime += Time.deltaTime;
                     timerSlider.value = 1 - _currentTime / timeToComplete;
                     if (_currentTime >= timeToComplete)
                     {
                         CheckColourMatch();
-                    }
+                    }*/
                 }
             }
             
