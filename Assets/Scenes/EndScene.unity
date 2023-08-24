@@ -808,7 +808,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 1de1107e000c9d148a2454cb595e378f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2419bc025f9674d46847f109b4635c73, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1184,7 +1184,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2053337580}
         m_TargetAssemblyTypeName: GPG212_09.SceneSwapper, Assembly-CSharp
-        m_MethodName: LoadMain
+        m_MethodName: LoadQuickPuzzle
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

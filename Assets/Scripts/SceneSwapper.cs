@@ -31,5 +31,10 @@ namespace GPG212_09
         {
             EventManager.onGameFinish -= LoadEnd;
         }
+
+        public void LoadQuickPuzzle()
+        {
+            SceneManager.LoadScene("QuickPuzzlesScene");
+        }
     }
 }

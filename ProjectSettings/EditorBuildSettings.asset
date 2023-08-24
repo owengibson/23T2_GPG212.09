@@ -12,8 +12,8 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 2bb960db3541e014fafe002cb7b615e4
   - enabled: 1
-    path: Assets/Scenes/MainScene.unity
-    guid: 46fcd994508ef8c42b5c8784784a805d
+    path: Assets/Scenes/QuickPuzzlesScene.unity
+    guid: 6170ebc6860c6d549825b3699c259a70
   - enabled: 1
     path: Assets/Scenes/EndScene.unity
     guid: 83f8e5fa755b64c4fad4ab3d1c77755a
