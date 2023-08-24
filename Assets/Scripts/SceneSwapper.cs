@@ -21,5 +21,15 @@ namespace GPG212_09
         {
             Application.Quit(); 
         }
+
+        private void OnEnable()
+        {
+            EventManager.onGameFinish += LoadEnd;
+        }
+
+        private void OnDisable()
+        {
+            EventManager.onGameFinish -= LoadEnd;
+        }
     }
 }

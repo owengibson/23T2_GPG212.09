@@ -11,8 +11,13 @@ namespace GPG212_09
         [Space]
 
         [SerializeField] private GameObject particleSystem;
+        [SerializeField] private GameObject nextPosition;
+        [Space]
+
+        [SerializeField] private bool isFinalPuzzle = false;
 
         private int _completedPuzzles;
+        private bool _areAllPuzzlesCompleted = false;
 
         private void IncrementCompletedPuzzles(PuzzleType puzzleType)
         {
@@ -25,7 +30,9 @@ namespace GPG212_09
                 // ALL PUZZLES OF THIS TYPE COMPLETED
                 Debug.Log($"All {this.puzzleType} puzzles done.");
                 particleSystem.SetActive(true);
+                GetComponent<AudioSource>().Play();
                 EventManager.onPuzzleTypeComplete?.Invoke();
+                _areAllPuzzlesCompleted = true;
             }
         }
 
@@ -33,6 +40,19 @@ namespace GPG212_09
         {
             _completedPuzzles = puzzles.Length - 1;
             IncrementCompletedPuzzles(puzzleType);
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (!other.CompareTag("Player")) return;
+            
+            if (!_areAllPuzzlesCompleted) return;
+
+            if (isFinalPuzzle) EventManager.onGameFinish?.Invoke();
+
+            else other.transform.position = nextPosition.transform.position;
+
+
         }
 
         private void Update()

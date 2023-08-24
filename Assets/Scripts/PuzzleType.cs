@@ -4,5 +4,5 @@ using UnityEngine;
 
 namespace GPG212_09
 {
-    public enum PuzzleType { Colour, Sequence, Parkour, Maze }
+    public enum PuzzleType { Colour, Sequence, Parkour, Maze, MazeHard, Math }
 }

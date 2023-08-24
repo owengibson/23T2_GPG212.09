@@ -9,9 +9,10 @@ using UnityEngine.UI;
 
 namespace GPG212_09
 {
-    public class MathPuzzle : MonoBehaviour
+    public class MathPuzzle : Puzzle
     {
         public PuzzleState puzzleState = PuzzleState.Closed;
+        private PuzzleType _puzzleType = PuzzleType.Math;
 
         [Header("UI References")]
         [SerializeField] private TextMeshProUGUI questionText;
@@ -149,9 +150,11 @@ namespace GPG212_09
             {
                 if (_currentRound == maxNumberOfRounds)
                 {
+                    // PUZZLE COMPLETE
                     successPanel.SetActive(true);
                     puzzleState = PuzzleState.Completed;
                     Invoke("ClosePuzzle", 1f);
+                    EventManager.onPuzzleComplete?.Invoke(_puzzleType);
                 }
 
                 else

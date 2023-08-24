@@ -7,7 +7,7 @@ namespace GPG212_09
     public class SequencePuzzle : Puzzle
     {
 
-        [SerializeField] private SequenceBlock[] blocks;
+        //[SerializeField] private SequenceBlock[] blocks;
         [SerializeField] private SequenceBlock[] sequence;
         [Space]
 

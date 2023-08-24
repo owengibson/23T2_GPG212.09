@@ -10,5 +10,6 @@ namespace GPG212_09
         public static Action<PuzzleType> onPuzzleComplete;
         public static Action onPuzzleTypeComplete;
         public static Action<SequenceBlock> onSequenceBlockStep;
+        public static Action onGameFinish;
     }
 }
